@@ -1,8 +1,9 @@
-function Connect-LMxSession.ps1 {
+function Connect-LMxSession {
 <#
 .SYNOPSIS
 .DESCRIPTION
 .PARAMETER PortalName
+.PARAMETER Credential
 .EXAMPLE
 Connect-LMxSession -PortalName myportal
 Starts a session to the portal myportal.logicmonitor.com. Will prompt for password
@@ -19,16 +20,22 @@ Starts a session to the portal myportal.logicmonitor.com. Will prompt for passwo
                       ParameterSetName='Parameter Set 1')]
             [ValidateNotNullOrEmpty()]
             [Alias("Portal")] 
-            $PortalName)
+            $PortalName,
 
-        begin {
-        }
+            [Parameter(Mandatory=$True,Position=1)]
+            [pscredential]
+            $Credential
+
+
+           )    
+
+    begin {
+    }
         
-        process {
+    process {
             
-        }
+    }
         
-        end {
-        }
+    end {
     }
 }
