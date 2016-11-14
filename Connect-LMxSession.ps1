@@ -5,8 +5,17 @@ function Connect-LMxSession {
 .PARAMETER PortalName
 .PARAMETER Credential
 .EXAMPLE
-Connect-LMxSession -PortalName myportal
-Starts a session to the portal myportal.logicmonitor.com. Will prompt for password
+PS> Connect-LMxSession
+Starts a session to the portal myportal.logicmonitor.com. Will prompt for portal name, username, and password
+
+.EXAMPLE
+PS> $cred = Get-Credential
+PS> Connect-LMxSession -PortalName myportal -Credential $cred
+Starts a session to the portal myportal.logicmonitor.com. 
+
+.EXAMPLE
+PS> Connect-LMxSession -PortalName myportal
+Starts a session to the portal myportal.logicmonitor.com. Will prompt for username and password
 #>
     [CmdletBinding(SupportsShouldProcess=$true,
                    PositionalBinding=$false)]
@@ -16,7 +25,7 @@ Starts a session to the portal myportal.logicmonitor.com. Will prompt for passwo
                       Position=0,
                       ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
-                      ValueFromRemainingArguments=$false, 
+                      ValueFromRemainingArguments=$false,
                       ParameterSetName='Parameter Set 1')]
             [ValidateNotNullOrEmpty()]
             [Alias("Portal")] 
