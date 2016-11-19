@@ -1,14 +1,11 @@
-function Connect-LMxSession {
+function Get-LMxAlert {
 <#
 .SYNOPSIS
-    Connect to a LogicMonitor portal.
+    Pull alert events from LogicMonitor connection
 .DESCRIPTION
     Makes a connection to the specified LogicMonitor portal with given credential.
     Returns an object the active connection.
-.PARAMETER PortalName
-    The LogicMonitor portal name as string. Example: "myportal" for the portal HTTPS://myportal.logicmonitor.com 
-.PARAMETER Credential
-    A pscredential object containing username and password for the LogicMonitor portal.
+.PARAMETER Session
 .EXAMPLE
     PS> Connect-LMxSession
     Start a LogicMonitor RPC API Session. Will prompt for portal name, username, and password
@@ -46,10 +43,9 @@ function Connect-LMxSession {
 
     $Session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     Invoke-WebRequest -UseBasicParsing -Uri $LoginURI -WebSession $session | Out-Null
-
-    $LMxSessionProperties =  @{'Session'=$Session; 'BaseURI'=$BaseURI}
-    $LMxSessionObject = New-Object -TypeName PSObject -Prop $LMxSessionProperties
-    Write-Output $LMxSessionObject
+    return @(Session=$Session; BaseURI=$BaseURI)
 }
 
-Connect-LMxSession @Args
+
+
+
