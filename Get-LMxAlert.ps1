@@ -1,23 +1,11 @@
 function Get-LMxAlert {
 <#
 .SYNOPSIS
-    Pull alert events from LogicMonitor connection
+    Retrieve alert events from LogicMonitor portal.
 .DESCRIPTION
-    Makes a connection to the specified LogicMonitor portal with given credential.
-    Returns an object the active connection.
-.PARAMETER Session
+    Gets alert events from the specified LogicMonitor session.    
 .EXAMPLE
-    PS> Connect-LMxSession
-    Start a LogicMonitor RPC API Session. Will prompt for portal name, username, and password
-.EXAMPLE
-    PS> $cred = Get-Credential
-    PS> Connect-LMxSession -PortalName myportal -Credential $cred
-    Starts a session to the portal myportal.logicmonitor.com. 
-.EXAMPLE
-    PS> Connect-LMxSession -PortalName myportal
-    Starts a session to the portal myportal.logicmonitor.com. Will prompt for username and password
-.OUTPUTS
-    Returns a WebSession object connected to the specified LogicMonitor portal if successful
+    PS> Get-LMxAlert -Session $session
 #>
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
@@ -28,24 +16,95 @@ function Get-LMxAlert {
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$false)]
             [ValidateNotNullOrEmpty()]
-            [Alias("Portal")] 
-            $PortalName,
- 
-            [Parameter(Mandatory=$True,Position=1)]
-            [pscredential]
-            $Credential
+            [Alias("Session")]
+            $LMSession,
 
+            [Parameter()]
+            [Alias("alertId")] 
+            $id,
+
+            [Parameter()]
+            [Alias("alertType")] 
+            $type,
+
+            [Parameter()]
+            [Alias("hostgroupName")] 
+            $group,
+
+            [Parameter()]
+            $hostName,
+
+            [Parameter()]
+            $hostId,
+
+            [Parameter()]
+            [Alias("dataSourceName")] 
+            $dataSource,
+
+            [Parameter()]
+            [Alias("dataPointName")] 
+            $dataPoint,
+
+            [Parameter()]
+            [Alias("startTime")] 
+            $startEpoch,
+
+            [Parameter()]
+            [Alias("endTime")] 
+            $endEpoch,
+
+            [Parameter()]
+            $ackFilter,
+
+            [Parameter()]
+            $filterSDT,
+
+            [Parameter()]
+            [Alias("alertLevel")] 
+            $level,
+
+            [Parameter()]
+            $orderBy,
+
+            [Parameter()]
+            $orderDirection,
+
+            [Parameter()]
+            $includeInactive,
+
+            [Parameter()]
+            $needTotal,
+
+            [Parameter()]
+            [Alias("numberOfResults")] 
+            $results,
+
+            [Parameter()]
+            [Alias("startResult")] 
+            $start,
+
+            [Parameter()]
+            $needMessage
            )    
 
-    $CupData = "c=$($Portalname)&u=$($Credential.UserName)&p=$($Credential.GetNetworkCredential().Password)"
-    $BaseURI = 'https://' + $PortalName + '.logicmonitor.com/santaba/'
-    $LoginURI = $BaseURI + 'rpc/signIn?' + $CupData
+    begin {
+        $RequestParameters = $PSBoundParameters
+        $RequestParameters.Remove('LMSession') | Out-Null
 
-    $Session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-    Invoke-WebRequest -UseBasicParsing -Uri $LoginURI -WebSession $session | Out-Null
-    return @(Session=$Session; BaseURI=$BaseURI)
+        if ($RequestParameters['hostId']) {
+            $RequestParameters['host'] = $RequestParameters['hostId']
+            $RequestParameters.Remove('hostId')
+        }
+         $r = invoke-webrequest -UseBasicParsing -WebSession $LMSession.WebSession -Method Get -Uri "$($LMsession.BaseURI)rpc/getAlerts" -Body $RequestParameters
+    }
+
+    process {
+        ($r.Content|ConvertFrom-Json).data.alerts
+    }
+
+    
 }
 
-
+Get-LMxAlert @args
 
 
