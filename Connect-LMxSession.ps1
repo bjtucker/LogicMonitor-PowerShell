@@ -45,9 +45,9 @@ function Connect-LMxSession {
     $LoginURI = $BaseURI + 'rpc/signIn?' + $CupData
 
     $Session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-    Invoke-WebRequest -UseBasicParsing -Uri $LoginURI -WebSession $session | Out-Null
+    Invoke-WebRequest -UseBasicParsing -Uri $LoginURI -WebSession $Session | Out-Null
 
-    $SessionProperties =  @{'Session'=$WebSession; 'BaseURI'=$BaseURI}
+    $SessionProperties =  @{'WebSession'=$Session; 'BaseURI'=$BaseURI}
     $SessionObject = New-Object -TypeName PSObject -Prop $SessionProperties
     Write-Output $SessionObject
 }
