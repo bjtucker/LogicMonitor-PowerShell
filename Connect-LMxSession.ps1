@@ -47,9 +47,9 @@ function Connect-LMxSession {
     $Session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     Invoke-WebRequest -UseBasicParsing -Uri $LoginURI -WebSession $session | Out-Null
 
-    $LMxSessionProperties =  @{'Session'=$Session; 'BaseURI'=$BaseURI}
-    $LMxSessionObject = New-Object -TypeName PSObject -Prop $LMxSessionProperties
-    Write-Output $LMxSessionObject
+    $SessionProperties =  @{'Session'=$WebSession; 'BaseURI'=$BaseURI}
+    $SessionObject = New-Object -TypeName PSObject -Prop $SessionProperties
+    Write-Output $SessionObject
 }
 
 Connect-LMxSession @Args
