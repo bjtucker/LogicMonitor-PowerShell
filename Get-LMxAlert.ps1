@@ -32,6 +32,7 @@ function Get-LMxAlert {
             $group,
 
             [Parameter()]
+            [Alias("host")] 
             $hostName,
 
             [Parameter()]
@@ -88,14 +89,16 @@ function Get-LMxAlert {
            )    
 
     begin {
-        $RequestParameters = $PSBoundParameters
-        $RequestParameters.Remove('LMSession') | Out-Null
+        $RPCParameters = $PSBoundParameters
+        $RPCParameters.Remove('LMSession') | Out-Null
 
-        if ($RequestParameters['hostId']) {
-            $RequestParameters['host'] = $RequestParameters['hostId']
-            $RequestParameters.Remove('hostId')
+        # 'host' gets special treatment. it's a reserved name, so can't be specified in Parameters 
+        if ($RPCParameters['hostName']) {
+            $RPCParameters['host'] = $RPCParameters['hostName']
+            $RPCParameters.Remove('hostName') | Out-Null
         }
-         $r = invoke-webrequest -UseBasicParsing -WebSession $LMSession.WebSession -Method Get -Uri "$($LMsession.BaseURI)rpc/getAlerts" -Body $RequestParameters
+
+         $r = invoke-webrequest -UseBasicParsing -WebSession $LMSession.WebSession -Method Get -Uri "$($LMsession.BaseURI)rpc/getAlerts" -Body $RPCParameters
     }
 
     process {
