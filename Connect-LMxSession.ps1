@@ -52,4 +52,6 @@ function Connect-LMxSession {
     Write-Output $SessionObject
 }
 
-Connect-LMxSession @Args
+if ($MyInvocation.CommandOrigin -eq "Runspace") {
+    Connect-LMxSession @Args
+}
