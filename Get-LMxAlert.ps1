@@ -14,78 +14,30 @@ function Get-LMxAlert {
                       Position=0,
                       ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
-                      ValueFromRemainingArguments=$false)]
+                      ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
-            [Alias("Session")]
+            [Alias("Session")] 
             $LMSession,
 
-            [Parameter()]
-            [Alias("alertId")] 
-            $id,
-
-            [Parameter()]
-            [Alias("alertType")] 
-            $type,
-
-            [Parameter()]
-            [Alias("hostgroupName")] 
-            $group,
-
-            [Parameter()]
-            [Alias("host")] 
-            $hostName,
-
-            [Parameter()]
-            $hostId,
-
-            [Parameter()]
-            [Alias("dataSourceName")] 
-            $dataSource,
-
-            [Parameter()]
-            [Alias("dataPointName")] 
-            $dataPoint,
-
-            [Parameter()]
-            [Alias("startTime")] 
-            $startEpoch,
-
-            [Parameter()]
-            [Alias("endTime")] 
-            $endEpoch,
-
-            [Parameter()]
-            $ackFilter,
-
-            [Parameter()]
-            $filterSDT,
-
-            [Parameter()]
-            [Alias("alertLevel")] 
-            $level,
-
-            [Parameter()]
-            $orderBy,
-
-            [Parameter()]
-            $orderDirection,
-
-            [Parameter()]
-            $includeInactive,
-
-            [Parameter()]
-            $needTotal,
-
-            [Parameter()]
-            [Alias("numberOfResults")] 
-            $results,
-
-            [Parameter()]
-            [Alias("startResult")] 
-            $start,
-
-            [Parameter()]
-            $needMessage
+            [Parameter()][Alias("alertId")] $id,
+            [Parameter()][Alias("alertType")] $type,
+            [Parameter()][Alias("hostgroupName")] $group,
+            [Parameter()][Alias("host")] $hostName,
+            [Parameter()] $hostId,
+            [Parameter()][Alias("dataSourceName")] $dataSource,
+            [Parameter()][Alias("dataPointName")] $dataPoint,
+            [Parameter()][Alias("startTime")] $startEpoch,
+            [Parameter()][Alias("endTime")] $endEpoch, #sic
+            [Parameter()] $ackFilter,
+            [Parameter()] $filterSDT,
+            [Parameter()][Alias("alertLevel")] $level,
+            [Parameter()] $orderBy,
+            [Parameter()] $orderDirection,
+            [Parameter()]$includeInactive,
+            [Parameter()] $needTotal,
+            [Parameter()][Alias("numberOfResults")] $results,
+            [Parameter()][Alias("startResult")] $start,
+            [Parameter()] $needMessage
            )    
 
     begin {
@@ -108,6 +60,7 @@ function Get-LMxAlert {
     
 }
 
-Get-LMxAlert @args
-
+if ($MyInvocation.CommandOrigin -eq "Runspace") {
+    Get-LMxAlert @args
+}
 
