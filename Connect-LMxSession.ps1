@@ -25,20 +25,18 @@ function Connect-LMxSession {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
+    Param ([Parameter(Position=0,
                       ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$false)]
             [ValidateNotNullOrEmpty()]
             [Alias("Portal")] 
-            $PortalName,
- 
-            [Parameter(Mandatory=$True,Position=1)]
-            [pscredential]
-            $Credential
+            $PortalName = $global:LOGICMONITOR_PORTAL,
 
-           )    
+            [Parameter(Position=1)]
+            [pscredential]
+            $Credential = $global:LOGICMONITOR_CREDENTIAL
+    )
 
     $CupData = "c=$($Portalname)&u=$($Credential.UserName)&p=$($Credential.GetNetworkCredential().Password)"
     $BaseURI = 'https://' + $PortalName + '.logicmonitor.com/santaba/'
@@ -49,7 +47,9 @@ function Connect-LMxSession {
 
     $SessionProperties =  @{'WebSession'=$Session; 'BaseURI'=$BaseURI}
     $SessionObject = New-Object -TypeName PSObject -Prop $SessionProperties
+    $global:LMSession = $SessionObject
     Write-Output $SessionObject
+
 }
 
 if ($MyInvocation.CommandOrigin -eq "Runspace") {
