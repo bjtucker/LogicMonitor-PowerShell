@@ -12,14 +12,12 @@ function Get-LMxHostGroup {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
-                      ValueFromPipeline=$true,
+    Param ([Parameter(ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
             [Alias("Session")]
-            $LMSession,
+            $LMSession = $global:LMSession
 
             [Parameter(Position=1)]
             [Alias("groupId")]

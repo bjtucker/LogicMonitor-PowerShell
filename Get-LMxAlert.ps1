@@ -10,14 +10,12 @@ function Get-LMxAlert {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
-                      ValueFromPipeline=$true,
+    Param ([Parameter(ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
             [Alias("Session")] 
-            $LMSession,
+            $LMSession = $global:LMSession,
 
             [Parameter()][Alias("alertId")] $id,
             [Parameter()][Alias("alertType")] $type,
@@ -27,7 +25,7 @@ function Get-LMxAlert {
             [Parameter()][Alias("dataSourceName")] $dataSource,
             [Parameter()][Alias("dataPointName")] $dataPoint,
             [Parameter()][Alias("startTime")] $startEpoch,
-            [Parameter()][Alias("endTime")] $endEpoch, #sic
+            [Parameter()][Alias("endTime")] $endEpoch,
             [Parameter()] $ackFilter,
             [Parameter()] $filterSDT,
             [Parameter()][Alias("alertLevel")] $level,

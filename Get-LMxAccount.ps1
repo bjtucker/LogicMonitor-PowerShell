@@ -9,14 +9,15 @@ function Get-LMxAccount {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
+    Param (
+            # An active LogicMonitor Session.
+            [Parameter(Position=0,
                       ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
             [Alias("Session")]
-            $LMSession
+            $LMSession = $global:LMSession
            )
     begin {
  

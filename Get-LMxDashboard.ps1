@@ -9,14 +9,12 @@ function Get-LMxDashboard {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
-                      ValueFromPipeline=$true,
+    Param ([Parameter(ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
             [Alias("Session")]
-            $LMSession
+            $LMSession = $global:LMSession
            )
     begin {
  

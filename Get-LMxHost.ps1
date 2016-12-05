@@ -15,19 +15,19 @@ function Get-LMxHost {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
-                      ValueFromPipeline=$true,
+    Param ([Parameter(ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
             [Alias("Session")]
-            $LMSession,
+            $LMSession = $global:LMSession,
 
+            #The display name of an individual Host.
             [Parameter()]
             [Alias("name")] 
             $displayName,
 
+            #The unique Id of a host group. 
             [Parameter()]
             [Alias("groupId")] 
             $hostGroupId=1

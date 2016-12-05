@@ -9,17 +9,15 @@ function Get-LMxAgent {
     [CmdletBinding(PositionalBinding=$true)]
     [Alias()]
     [OutputType([String])]
-    Param ([Parameter(Mandatory=$true,
-                      Position=0,
+    Param ([Parameter(Position=0,
                       ValueFromPipeline=$true,
                       ValueFromPipelineByPropertyName=$true,
                       ValueFromRemainingArguments=$true)]
             [ValidateNotNullOrEmpty()]
             [Alias("Session")]
-            $LMSession
+            $LMSession = $Global:LMSession
            )
     begin {
- 
         $r = invoke-webrequest -UseBasicParsing -WebSession $LMSession.WebSession -Method Get -Uri "$($LMsession.BaseURI)rpc/getAgents"
         $Agents = ($r.Content|ConvertFrom-Json).data
     }
